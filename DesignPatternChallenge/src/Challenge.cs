@@ -4,104 +4,12 @@
 // caractere consome memória excessiva e degrada performance
 
 using System;
-using System.Collections.Generic;
+using DesignPatternChallenge.Models;
 
 namespace DesignPatternChallenge
 {
     // Contexto: Editor que precisa representar documentos grandes com formatação rica
     // Cada caractere tem estado intrínseco (compartilhável) e extrínseco (único)
-    
-    // Problema: Abordagem ingênua - um objeto completo para cada caractere
-    public class Character
-    {
-        // Estado intrínseco (compartilhável entre caracteres iguais)
-        public char Symbol { get; set; }
-        public string FontFamily { get; set; }
-        public int FontSize { get; set; }
-        public string Color { get; set; }
-        public bool IsBold { get; set; }
-        public bool IsItalic { get; set; }
-        public bool IsUnderline { get; set; }
-        
-        // Estado extrínseco (único para cada posição)
-        public int Row { get; set; }
-        public int Column { get; set; }
-
-        public Character(char symbol, string fontFamily, int fontSize, string color, 
-                        bool isBold, bool isItalic, bool isUnderline, int row, int column)
-        {
-            Symbol = symbol;
-            FontFamily = fontFamily;
-            FontSize = fontSize;
-            Color = color;
-            IsBold = isBold;
-            IsItalic = isItalic;
-            IsUnderline = isUnderline;
-            Row = row;
-            Column = column;
-        }
-
-        public void Render()
-        {
-            var style = "";
-            if (IsBold) style += "B";
-            if (IsItalic) style += "I";
-            if (IsUnderline) style += "U";
-            
-            Console.WriteLine($"[{Row},{Column}] '{Symbol}' {FontFamily} {FontSize}pt {Color} {style}");
-        }
-
-        // Cada instância ocupa aproximadamente 80-100 bytes na memória
-        public int GetMemorySize()
-        {
-            return sizeof(char) +         // Symbol: 2 bytes
-                   32 +                   // FontFamily: ~32 bytes (string)
-                   sizeof(int) +          // FontSize: 4 bytes
-                   32 +                   // Color: ~32 bytes (string)
-                   3 * sizeof(bool) +     // Booleans: 3 bytes
-                   2 * sizeof(int);       // Row, Column: 8 bytes
-        }
-    }
-
-    public class Document
-    {
-        private List<Character> _characters;
-
-        public Document()
-        {
-            _characters = new List<Character>();
-        }
-
-        public void AddCharacter(char symbol, string fontFamily, int fontSize, string color,
-                                bool isBold, bool isItalic, bool isUnderline, int row, int column)
-        {
-            var character = new Character(symbol, fontFamily, fontSize, color, 
-                                        isBold, isItalic, isUnderline, row, column);
-            _characters.Add(character);
-        }
-
-        public void Render()
-        {
-            foreach (var character in _characters)
-            {
-                character.Render();
-            }
-        }
-
-        public void PrintMemoryUsage()
-        {
-            long totalMemory = 0;
-            foreach (var character in _characters)
-            {
-                totalMemory += character.GetMemorySize();
-            }
-
-            Console.WriteLine($"\n=== Uso de Memória ===");
-            Console.WriteLine($"Total de caracteres: {_characters.Count}");
-            Console.WriteLine($"Memória aproximada: {totalMemory:N0} bytes ({totalMemory / 1024.0:N2} KB)");
-            Console.WriteLine($"Memória por caractere: ~{totalMemory / _characters.Count} bytes");
-        }
-    }
 
     class Program
     {
@@ -113,7 +21,7 @@ namespace DesignPatternChallenge
 
             // Simulando documento com texto formatado
             // Problema: Repetição massiva de dados compartilháveis
-            
+
             // Linha 1: "Hello World" em Arial 12pt preto
             string text1 = "Hello World";
             for (int i = 0; i < text1.Length; i++)
