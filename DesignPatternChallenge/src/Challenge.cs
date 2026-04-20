@@ -5,6 +5,7 @@
 
 using System;
 using DesignPatternChallenge.Models;
+using DesignPatternChallenge.src.Factories;
 
 namespace DesignPatternChallenge
 {
@@ -17,8 +18,7 @@ namespace DesignPatternChallenge
         {
             Console.WriteLine("=== Editor de Texto - Problema de Memória ===\n");
 
-            var document = new Document();
-
+            var characterFactory = new CharacterFactory();
             // Simulando documento com texto formatado
             // Problema: Repetição massiva de dados compartilháveis
 
@@ -28,62 +28,69 @@ namespace DesignPatternChallenge
             {
                 // Cada caractere 'l' cria um novo objeto completo
                 // mesmo tendo a mesma formatação!
-                document.AddCharacter(
-                    text1[i],
-                    "Arial",      // Repetido em cada caractere
-                    12,           // Repetido em cada caractere
-                    "Black",      // Repetido em cada caractere
-                    false,        // Repetido em cada caractere
-                    false,        // Repetido em cada caractere
-                    false,        // Repetido em cada caractere
-                    1,
-                    i + 1
-                );
+                // document.AddCharacter(
+                //     text1[i],
+                //     "Arial",      // Repetido em cada caractere
+                //     12,           // Repetido em cada caractere
+                //     "Black",      // Repetido em cada caractere
+                //     false,        // Repetido em cada caractere
+                //     false,        // Repetido em cada caractere
+                //     false,        // Repetido em cada caractere
+                //     1,
+                //     i + 1
+                // );
+
+                characterFactory.GetCharacter("Arial", 12, "Black", false, false, false);
             }
 
             // Linha 2: "IMPORTANT" em Arial 12pt vermelho, negrito
             string text2 = "IMPORTANT";
             for (int i = 0; i < text2.Length; i++)
             {
-                document.AddCharacter(
-                    text2[i],
-                    "Arial",      // Repetido novamente!
-                    12,
-                    "Red",
-                    true,
-                    false,
-                    false,
-                    2,
-                    i + 1
-                );
+                // document.AddCharacter(
+                //     text2[i],
+                //     "Arial",      // Repetido novamente!
+                //     12,
+                //     "Red",
+                //     true,
+                //     false,
+                //     false,
+                //     2,
+                //     i + 1
+                // );
+
+                characterFactory.GetCharacter("Arial", 12, "Red", true, false, false);
             }
 
             // Linha 3: Mais texto normal
             string text3 = "This is a sample text";
             for (int i = 0; i < text3.Length; i++)
             {
-                document.AddCharacter(
-                    text3[i],
-                    "Arial",
-                    12,
-                    "Black",
-                    false,
-                    false,
-                    false,
-                    3,
-                    i + 1
-                );
+                // document.AddCharacter(
+                //     text3[i],
+                //     "Arial",
+                //     12,
+                //     "Black",
+                //     false,
+                //     false,
+                //     false,
+                //     3,
+                //     i + 1
+                // );
+
+                characterFactory.GetCharacter("Arial", 12, "Black", false, false, false);
             }
 
             Console.WriteLine("Renderizando primeiros 5 caracteres:\n");
             int count = 0;
             foreach (var ch in "Hello")
             {
-                var character = new Character(ch, "Arial", 12, "Black", false, false, false, 1, ++count);
-                character.Render();
+                var character = characterFactory.GetCharacter("Arial", 12, "Black", false, false, false);
+                character.Render(ch, 1, ++count);
             }
 
-            document.PrintMemoryUsage();
+
+            Console.WriteLine($"Memoria usada: {characterFactory.GetMemoryUsage()}");
 
             Console.WriteLine("\n=== PROBLEMAS ===");
             Console.WriteLine("✗ Duplicação massiva: 'Arial', '12', 'Black' repetidos em cada caractere");
