@@ -41,7 +41,7 @@ To implement Flyweight in this project, the following was done:
 Memory usage was measured before and after the Flyweight implementation:
 
 * Baseline (`5855922`): **3,321 bytes** (`Approximate memory: 3,321 bytes`)
-* Current (`main`): **162 bytes** (`Memory used: 162`)
+* Current (`main`): **162 bytes** (`Memory used: 162 bytes`)
 * Absolute reduction: **3,159 bytes**
 * Relative reduction: **95.12%**
 
